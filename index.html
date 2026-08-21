@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Interactive pilot atlas of photovoltaic land-use restrictions in Lombardia, Italy." />
+  <title>Where Can Solar Go? — PV Restrictions Atlas</title>
+  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@4/dist/pmtiles.js"></script>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar" class="sidebar" aria-label="Atlas controls">
+    <header class="brand">
+      <div class="eyebrow">Interactive research atlas</div>
+      <h1>Where Can Solar Go?</h1>
+      <p class="subtitle">PV Restrictions Atlas for Italy</p>
+      <span class="pilot-badge">Pilot · Lombardia</span>
+    </header>
+    <nav class="tabs" aria-label="Sidebar sections">
+      <button class="tab active" data-tab="explore" type="button">Explore</button>
+      <button class="tab" data-tab="about" type="button">About</button>
+    </nav>
+    <section id="tab-explore" class="tab-panel active">
+      <div class="control-group">
+        <div class="control-label">Map view</div>
+        <label class="radio-row"><input type="radio" name="viewMode" value="intensity" checked /><span><strong>Overlap intensity</strong><small>Color by number of simultaneous constraints</small></span></label>
+        <label class="radio-row"><input type="radio" name="viewMode" value="categories" /><span><strong>Selected categories</strong><small>Show areas affected by chosen constraint types</small></span></label>
+      </div>
+      <div id="category-controls" class="control-group muted-when-disabled">
+        <div class="control-label with-action"><span>Constraint categories</span><button id="toggle-all" class="text-button" type="button">Clear all</button></div>
+        <label class="check-row"><input type="checkbox" value="LA" checked /><span><i class="dot dot-la"></i>Landscape assets</span></label>
+        <label class="check-row"><input type="checkbox" value="CH" checked /><span><i class="dot dot-ch"></i>Cultural heritage</span></label>
+        <label class="check-row"><input type="checkbox" value="NA" checked /><span><i class="dot dot-na"></i>Natural assets</span></label>
+        <label class="check-row"><input type="checkbox" value="EC" checked /><span><i class="dot dot-ec"></i>Environmental constraints</span></label>
+        <label class="check-row"><input type="checkbox" value="INF" checked /><span><i class="dot dot-inf"></i>Infrastructure</span></label>
+        <label class="check-row"><input type="checkbox" value="NH" checked /><span><i class="dot dot-nh"></i>Natural hazards</span></label>
+      </div>
+      <div class="control-group">
+        <div class="control-label">About this location</div>
+        <div id="inspection-empty" class="inspection-empty">Click a restriction polygon on the map to inspect the applicable constraints.</div>
+        <div id="inspection-result" class="inspection-result" hidden>
+          <div class="status-row"><span class="status-badge restricted">Restricted</span><span id="constraint-count" class="constraint-count"></span></div>
+          <div id="constraint-list" class="constraint-list"></div>
+          <div class="combo-row">Combination: <strong id="combo-value"></strong></div>
+        </div>
+      </div>
+      <button id="reset-view" class="secondary-button" type="button">Reset Lombardia view</button>
+      <div class="notice"><strong>Screening tool.</strong> This pilot visualizes research-based exclusion criteria. It does not replace official planning, legal, environmental, or permitting assessments.</div>
+    </section>
+    <section id="tab-about" class="tab-panel">
+      <div class="about-section"><h2>About the atlas</h2><p>This pilot presents the Lombardia portion of a national-scale GIS framework for ground-mounted photovoltaic land restrictions in Italy.</p><p>The underlying research integrates six thematic groups of spatial constraints and evaluates where multiple restrictions overlap.</p></div>
+      <div class="about-section"><h2>Constraint groups</h2><dl class="definition-list"><dt>Landscape assets</dt><dd>Landscape-protected areas and related spatial restrictions.</dd><dt>Cultural heritage</dt><dd>Protected cultural and heritage assets and their applicable buffers.</dd><dt>Natural assets</dt><dd>Natura 2000, EUAP, IBA and Ramsar protected areas.</dd><dt>Environmental constraints</dt><dd>Environmental safety constraints represented in the analysis, including water-body related restrictions.</dd><dt>Infrastructure</dt><dd>Safety distances around infrastructure and built-up areas.</dd><dt>Natural hazards</dt><dd>Areas affected by flood and landslide hazard restrictions.</dd></dl></div>
+      <div class="about-section citation-box"><h2>Research basis</h2><p>Ranjgar, B.; Niccolai, A.; Leva, S. (2025). <em>Where Can Solar Go? Assessing Land Availability for PV in Italy Under Regulatory Constraints.</em> Solar, 5, 40.</p><a href="https://doi.org/10.3390/solar5030040" target="_blank" rel="noopener noreferrer">Open the paper ↗</a></div>
+      <div class="about-section"><h2>Pilot status</h2><p>This is an early public release focused on Lombardia. National coverage and downloadable GIS-ready datasets are planned for subsequent releases.</p></div>
+    </section>
+    <footer class="sidebar-footer">Map: OpenFreeMap · Data © OpenStreetMap contributors</footer>
+  </aside>
+  <main class="map-shell">
+    <div id="map" aria-label="PV restrictions map of Lombardia"></div>
+    <div class="map-topbar"><button id="mobile-menu" class="icon-button mobile-only" type="button" aria-label="Open controls">☰</button><div class="map-title"><span class="map-title-main">Lombardia</span><span class="map-title-sub">PV restriction screening</span></div></div>
+    <div id="legend" class="legend" aria-label="Map legend"><div class="legend-title">Overlapping constraints</div><div class="legend-item"><span style="--swatch:#fff7bc"></span>1 constraint</div><div class="legend-item"><span style="--swatch:#fec44f"></span>2 constraints</div><div class="legend-item"><span style="--swatch:#fe9929"></span>3 constraints</div><div class="legend-item"><span style="--swatch:#ec7014"></span>4 constraints</div><div class="legend-item"><span style="--swatch:#cc4c02"></span>5–6 constraints</div></div>
+    <div id="loading" class="loading" role="status">Loading restrictions…</div>
+  </main>
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>
