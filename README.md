@@ -2,13 +2,14 @@
 
 > **Pilot release: Lombardia**
 
-An interactive GIS atlas for exploring spatial restrictions affecting ground-mounted photovoltaic (PV) development in Italy.
+An interactive GIS atlas for exploring regulatory, environmental, landscape,
+cultural, infrastructural, and natural-hazard constraints affecting
+ground-mounted photovoltaic development in Italy.
 
-🌐 **Live Atlas:**  
-https://babak-rj-az.github.io/italy-pv-restrictions-atlas/
+🌐 **[Explore the Live Atlas](https://babak-rj-az.github.io/italy-pv-restrictions-atlas/)**  
+📄 **[Read the Research Paper](https://doi.org/10.3390/solar5030040)**
 
-📄 **Research paper:**  
-https://doi.org/10.3390/solar5030040
+![Italy PV Restrictions Atlas — Lombardia pilot](docs/images/Lombardia_PV_Restrictions_atlas.png)
 
 ---
 
